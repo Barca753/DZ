@@ -33,11 +33,16 @@ export function LegalTextsCatalogTab({ onAddLegalText, onOpenApprovalQueue }: Le
   const [currentSort, setCurrentSort] = useState<SortOption>({ field: 'date', direction: 'desc' });
 
   // Convertir les données en format LegalText pour le service de filtrage
-  const convertedTexts: LegalText[] = useMemo(() => {
+  const convertedTexts: any[] = useMemo(() => {
     return filteredTexts.map(text => ({
-      id: text.id,
+      id: String(text.id),
       title: text.title,
       type: text.type || 'Loi',
+      category: text.category || 'Général',
+      publishDate: text.publishDate || new Date().toISOString(),
+      description: text.description || '',
+      authority: text.authority || 'Non spécifié',
+      joNumber: text.joNumber || '',
       status: text.status || 'En vigueur',
       date: new Date(text.date || Date.now()),
       source: text.source || 'Journal Officiel',
@@ -101,7 +106,7 @@ export function LegalTextsCatalogTab({ onAddLegalText, onOpenApprovalQueue }: Le
       />
 
       {/* Statistiques */}
-      <LegalTextsStatistics filteredTexts={processedTexts} />
+      <LegalTextsStatistics filteredTexts={processedTexts as any} />
 
       {/* Barre de recherche et boutons d'action avec bouton File d'approbation fonctionnel */}
       <LegalTextsSearchActions
@@ -125,7 +130,7 @@ export function LegalTextsCatalogTab({ onAddLegalText, onOpenApprovalQueue }: Le
           <LegalTextsEmptyState />
         ) : (
           processedTexts.map((text) => (
-            <LegalTextCard key={text.id} text={text} />
+            <LegalTextCard key={text.id} text={text as any} />
           ))
         )}
       </div>

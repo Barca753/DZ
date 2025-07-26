@@ -38,7 +38,7 @@ interface DocumentData {
     categorie?: string;
   };
   // Contenu simulé du document
-  content?: {
+  content?: string | {
     preambule?: string;
     articles?: Array<{
       numero: string;
@@ -52,7 +52,32 @@ interface DocumentData {
 interface DocumentViewerModalProps {
   isOpen: boolean;
   onClose: () => void;
-  document: DocumentData | null;
+  document: {
+    title: string;
+    content?: string | {
+      preambule?: string;
+      articles?: Array<{
+        numero: string;
+        titre: string;
+        contenu: string;
+      }>;
+      dispositionsFinales?: string;
+    };
+    type?: string;
+    id?: string;
+    submittedBy?: string;
+    submissionDate?: Date;
+    status?: string;
+    confidence?: number;
+    priority?: string;
+    ocrData?: {
+      numero?: string;
+      dateGregorienne?: string;
+      dateHijri?: string;
+      reference?: string;
+      categorie?: string;
+    };
+  } | null;
 }
 
 export function DocumentViewerModal({ isOpen, onClose, document }: DocumentViewerModalProps) {
@@ -157,7 +182,9 @@ Pour plus d'informations, contacter le service concerné.`
     }
   };
 
-  const content = getDocumentContent();
+  const content = typeof document.content === 'string' ? 
+    { preambule: document.content } : 
+    (document.content || getDocumentContent());
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -193,10 +220,12 @@ Pour plus d'informations, contacter le service concerné.`
                 </div>
               </DialogTitle>
               <div className="flex items-center gap-3 text-sm text-gray-600">
-                <Badge variant="outline">{document.type}</Badge>
-                <Badge className={getStatusColor(document.status)}>
-                  {getStatusText(document.status)}
-                </Badge>
+                <Badge variant="outline">{document.type || 'Document'}</Badge>
+                {document.status && (
+                  <Badge className={getStatusColor(document.status)}>
+                    {getStatusText(document.status)}
+                  </Badge>
+                )}
                 {document.confidence && (
                   <span className="flex items-center gap-1">
                     <CheckCircle className="h-4 w-4 text-green-600" />
@@ -209,7 +238,7 @@ Pour plus d'informations, contacter le service concerné.`
               <Button 
                 variant="outline" 
                 size="sm"
-                onClick={buttonHandlers.downloadDocument(document.id.toString(), document.title)}
+                onClick={buttonHandlers.downloadDocument(document.id?.toString() || '1', document.title)}
               >
                 <Download className="h-4 w-4 mr-1" />
                 Télécharger
@@ -313,20 +342,24 @@ Pour plus d'informations, contacter le service concerné.`
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
                         <Hash className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm"><strong>ID:</strong> {document.id}</span>
+                        <span className="text-sm"><strong>ID:</strong> {document.id || 'N/A'}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Tag className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm"><strong>Type:</strong> {document.type}</span>
+                        <span className="text-sm"><strong>Type:</strong> {document.type || 'Document'}</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <User className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm"><strong>Soumis par:</strong> {document.submittedBy}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm"><strong>Date de soumission:</strong> {document.submissionDate.toLocaleDateString('fr-FR')}</span>
-                      </div>
+                      {document.submittedBy && (
+                        <div className="flex items-center gap-2">
+                          <User className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm"><strong>Soumis par:</strong> {document.submittedBy}</span>
+                        </div>
+                      )}
+                      {document.submissionDate && (
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm"><strong>Date de soumission:</strong> {document.submissionDate.toLocaleDateString('fr-FR')}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -373,7 +406,7 @@ Pour plus d'informations, contacter le service concerné.`
                     <div>
                       <div className="text-sm font-medium">Document soumis</div>
                       <div className="text-xs text-gray-600">
-                        {document.submissionDate.toLocaleString('fr-FR')} par {document.submittedBy}
+                        {document.submissionDate?.toLocaleString('fr-FR') || 'Date inconnue'} par {document.submittedBy || 'Utilisateur inconnu'}
                       </div>
                     </div>
                   </div>
