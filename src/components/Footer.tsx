@@ -46,7 +46,7 @@ export function Footer({ onSectionChange }: FooterProps) {
                 aria-label="Retour à l'accueil"
               >
                 <div className="w-9 h-7 bg-white rounded-lg flex items-center justify-center">
-                  <img src="/lovable-uploads/ade65d41-3261-4c5c-8c4e-7253a4752b2e.png" alt="Dalil.dz Logo" className="w-9 h-7 object-contain" />
+                  <img src="/dalil-new-logo.png" alt="Dalil.dz Logo" className="w-9 h-7 object-contain" />
                 </div>
                 <h3 className="font-bold text-lg">dalil.dz</h3>
               </button>

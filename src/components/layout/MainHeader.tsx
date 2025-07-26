@@ -73,7 +73,7 @@ export function MainHeader({ language, activeSection, onLanguageChange, onSectio
                 className="w-20 h-15 bg-white rounded flex items-center justify-center flex-shrink-0 cursor-pointer hover:bg-gray-50 transition-colors"
                 aria-label="Retour à l'accueil"
               >
-                <img src="/lovable-uploads/ade65d41-3261-4c5c-8c4e-7253a4752b2e.png" alt="Dalil.dz Logo" className="w-21 h-15 object-contain" />
+                <img src="/dalil-new-logo.png" alt="Dalil.dz Logo" className="w-21 h-15 object-contain" />
               </button>
               <div className="min-w-0">
                 <button 

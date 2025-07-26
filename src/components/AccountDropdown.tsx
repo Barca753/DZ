@@ -290,7 +290,7 @@ export function AccountDropdown() {
           <div className="space-y-4">
             <div className="text-center">
               <div className="w-16 h-12 bg-white rounded flex items-center justify-center mx-auto mb-4 border border-green-600">
-                <Flag className="w-8 h-8 text-green-600" />
+                <img src="/dalil-new-logo.png" alt="Dalil.dz Logo" className="w-16 h-12 object-contain" />
               </div>
               <h3 className="font-semibold text-lg">dalil.dz</h3>
               <p className="text-sm text-gray-600">Plateforme de veille juridique et réglementaire</p>
