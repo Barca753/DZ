@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -181,7 +181,7 @@ export function LibrarySection() {
                       <Button 
                         variant="ghost" 
                         size="sm"
-                        onClick={buttonHandlers.addToFavorites(item.title)}
+                        onClick={buttonHandlers.addToFavorites('document', item.title)}
                       >
                         <Star className="w-4 h-4" />
                       </Button>

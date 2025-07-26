@@ -40,12 +40,16 @@ export function Footer({ onSectionChange }: FooterProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Logo and description */}
             <div className="lg:col-span-1">
-              <div className="flex items-center gap-3 mb-3">
+              <button 
+                onClick={() => handleNavigation('home')}
+                className="flex items-center gap-3 mb-3 cursor-pointer hover:opacity-80 transition-opacity"
+                aria-label="Retour à l'accueil"
+              >
                 <div className="w-9 h-7 bg-white rounded-lg flex items-center justify-center">
                   <img src="/lovable-uploads/ade65d41-3261-4c5c-8c4e-7253a4752b2e.png" alt="Dalil.dz Logo" className="w-9 h-7 object-contain" />
                 </div>
                 <h3 className="font-bold text-lg">dalil.dz</h3>
-              </div>
+              </button>
               <p className="text-green-100 text-sm leading-relaxed mb-3">
                 Plateforme nationale de veille juridique et réglementaire de la République Algérienne Démocratique et Populaire.
               </p>

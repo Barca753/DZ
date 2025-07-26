@@ -68,12 +68,22 @@ export function MainHeader({ language, activeSection, onLanguageChange, onSectio
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 min-w-0">
             <div className="flex items-center gap-3">
-              <div className="w-20 h-15 bg-white rounded flex items-center justify-center flex-shrink-0">
+              <button 
+                onClick={() => onSectionChange("home")}
+                className="w-20 h-15 bg-white rounded flex items-center justify-center flex-shrink-0 cursor-pointer hover:bg-gray-50 transition-colors"
+                aria-label="Retour à l'accueil"
+              >
                 <img src="/lovable-uploads/ade65d41-3261-4c5c-8c4e-7253a4752b2e.png" alt="Dalil.dz Logo" className="w-21 h-15 object-contain" />
-              </div>
+              </button>
               <div className="min-w-0">
-                <h1 className="text-lg sm:text-xl font-bold text-gray-900 truncate">{headerTexts.title}</h1>
-                <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">{headerTexts.subtitle}</p>
+                <button 
+                  onClick={() => onSectionChange("home")}
+                  className="text-left cursor-pointer hover:opacity-80 transition-opacity"
+                  aria-label="Retour à l'accueil"
+                >
+                  <h1 className="text-lg sm:text-xl font-bold text-gray-900 truncate">{headerTexts.title}</h1>
+                  <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">{headerTexts.subtitle}</p>
+                </button>
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 
-// @ts-nocheck
+
 import { useState, useEffect } from 'react';
 import { ClipboardList } from 'lucide-react';
 import { SectionHeader } from './common/SectionHeader';
@@ -227,9 +227,9 @@ export function ProceduresSections({ section, language }: ProceduresSectionsProp
       <ApprovalQueueModal
         isOpen={showApprovalQueue}
         onClose={() => setShowApprovalQueue(false)}
-        onApproveItem={handleApproveFromQueue}
-        onRejectItem={handleRejectFromQueue}
-        onViewItem={handleViewFromQueue}
+        onApproveItem={(item: any, comment?: string) => handleApproveFromQueue(item, comment)}
+        onRejectItem={(item: any, reason: string) => handleRejectFromQueue(item, reason)}
+        onViewItem={(item: any) => handleViewFromQueue(item)}
         filterType="procedure"
       />
     </div>

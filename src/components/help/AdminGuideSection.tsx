@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ActionButtonsDemo } from '@/components/examples/ActionButtonsDemo';
+
 import { Button } from '@/components/ui/button';
 import { buttonHandlers } from '@/utils/buttonUtils';
 import { Input } from '@/components/ui/input';
@@ -1165,11 +1165,6 @@ export function AdminGuideSection() {
         </CardContent>
       </Card>
 
-      {/* Section Démonstration des Actions */}
-      <div>
-        <h2 className="text-2xl font-bold mb-4">Démonstration des Actions</h2>
-        <ActionButtonsDemo />
-      </div>
 
       {/* Modale de gestion des utilisateurs */}
       {showUserManagementModal && (
