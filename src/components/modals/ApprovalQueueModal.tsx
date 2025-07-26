@@ -18,7 +18,7 @@ interface ApprovalItem {
   submittedBy: string;
   submittedDate: string;
   priority: 'urgent' | 'normal' | 'low';
-  status: 'pending' | 'reviewed';
+  status: 'pending' | 'reviewed' | 'Approuvé' | 'Rejeté';
 }
 
 // Données d'exemple pour la file d'approbation
@@ -70,13 +70,14 @@ export function ApprovalQueueModal({
   const [selectedCategory, setSelectedCategory] = useState('Toutes les catégories');
   const [selectedPriority, setSelectedPriority] = useState('Toutes les priorités');
   const [activeTab, setActiveTab] = useState('Tout');
+  const [items, setItems] = useState(mockApprovalQueue);
 
   const handleApprove = (id: string) => {
     // Mettre à jour le statut de l'élément
     setItems(prevItems => 
       prevItems.map(item => 
         item.id === id 
-          ? { ...item, status: 'Approuvé', priority: 'Traitée' }
+          ? { ...item, status: 'Approuvé' as const }
           : item
       )
     );
@@ -90,7 +91,7 @@ export function ApprovalQueueModal({
       setItems(prevItems => 
         prevItems.map(item => 
           item.id === id 
-            ? { ...item, status: 'Rejeté', priority: `Rejeté: ${reason}` }
+            ? { ...item, status: 'Rejeté' as const }
             : item
         )
       );
@@ -101,12 +102,12 @@ export function ApprovalQueueModal({
   const handleExamine = (id: string) => {
     const item = items.find(item => item.id === id);
     if (item) {
-      alert(`🔍 EXAMEN DÉTAILLÉ:\n\nTitre: ${item.title}\nType: ${item.type}\nStatut: ${item.status}\nPriorité: ${item.priority}\nDate: ${item.date}\n\nCet élément est maintenant en cours d'examen approfondi.`);
+      alert(`🔍 EXAMEN DÉTAILLÉ:\n\nTitre: ${item.title}\nType: ${item.type}\nStatut: ${item.status}\nPriorité: ${item.priority}\nDate: ${item.submittedDate}\n\nCet élément est maintenant en cours d'examen approfondi.`);
     }
   };
 
   // Filtrage des éléments
-  const filteredItems = mockApprovalQueue.filter(item => {
+  const filteredItems = items.filter(item => {
     const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'Toutes les catégories' || item.category === selectedCategory;
     const matchesPriority = selectedPriority === 'Toutes les priorités' || item.priority === selectedPriority;

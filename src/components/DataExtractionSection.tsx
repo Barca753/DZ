@@ -275,7 +275,7 @@ export function DataExtractionSection() {
                       handleShareContent({
                         id: extraction.id,
                         title: extraction.fileName,
-                        content: extraction.extractedData
+                        content: (extraction as any).extractedData || extraction.fileName
                       });
                     }}
                   >
@@ -296,7 +296,7 @@ export function DataExtractionSection() {
           onClose={() => setShowDocumentModal(false)}
           document={{
             title: currentDocument.title,
-            content: `Type: ${currentDocument.type}\nFichier: ${currentDocument.fileName}\nStatut: ${currentDocument.status}\n\nDonnées extraites:\n${JSON.stringify(currentDocument.extractedData, null, 2)}\n\nInterface de visualisation des résultats d'extraction.`
+            content: `Type: ${currentDocument.type}\nFichier: ${currentDocument.fileName}\nStatut: ${currentDocument.status}\n\nDonnées extraites:\n${JSON.stringify((currentDocument as any).extractedData || {}, null, 2)}\n\nInterface de visualisation des résultats d'extraction.`
           }}
         />
       )}
