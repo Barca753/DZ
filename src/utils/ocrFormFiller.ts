@@ -24,7 +24,8 @@ interface ProcedureFormData {
 }
 
 export function extractLegalTextData(ocrText: string): Partial<LegalTextFormData> {
-  console.log('Extraction OCR du texte:', ocrText.substring(0, 200) + '...');
+  const { log } = require('./securityLogger');
+  log.debug('Extraction OCR du texte:', { textLength: ocrText.length, preview: ocrText.substring(0, 200) + '...' }, 'OCRFormFiller');
   const data: Partial<LegalTextFormData> = {};
   
   // Recherche de patterns spécifiques aux textes juridiques algériens

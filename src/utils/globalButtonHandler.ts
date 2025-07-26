@@ -86,30 +86,59 @@ export class GlobalButtonHandler {
     const modalContent = document.createElement('div');
     modalContent.className = 'bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto';
     
-    modalContent.innerHTML = `
-      <div class="p-6">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-semibold text-gray-900">${title}</h2>
-          <button class="close-modal text-gray-400 hover:text-gray-600">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-        </div>
-        <div class="mb-6">
-          ${content}
-        </div>
-        <div class="flex justify-end space-x-3">
-          ${actions?.map(action => 
-            `<button class="action-btn px-4 py-2 rounded-md ${
-              action.variant === 'primary' ? 'bg-blue-600 text-white hover:bg-blue-700' : 
-              action.variant === 'danger' ? 'bg-red-600 text-white hover:bg-red-700' :
-              'bg-gray-200 text-gray-800 hover:bg-gray-300'
-            }" data-action="${action.label}">${action.label}</button>`
-          ).join('') || '<button class="action-btn px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Fermer</button>'}
-        </div>
-      </div>
-    `;
+    // Construction sécurisée du contenu modal
+    const { setSecureHTML } = require('./secureDOM');
+    
+    const modalWrapper = document.createElement('div');
+    modalWrapper.className = 'p-6';
+    
+    const header = document.createElement('div');
+    header.className = 'flex justify-between items-center mb-4';
+    
+    const titleElement = document.createElement('h2');
+    titleElement.className = 'text-xl font-semibold text-gray-900';
+    titleElement.textContent = title;
+    
+    const closeButton = document.createElement('button');
+    closeButton.className = 'close-modal text-gray-400 hover:text-gray-600';
+    closeButton.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+    </svg>`;
+    
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'mb-6';
+    setSecureHTML(contentDiv, content);
+    
+    // Actions footer
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'flex justify-end space-x-3';
+    
+    if (actions) {
+      actions.forEach(action => {
+        const button = document.createElement('button');
+        button.className = `action-btn px-4 py-2 rounded-md ${
+          action.variant === 'primary' ? 'bg-blue-600 text-white hover:bg-blue-700' : 
+          action.variant === 'danger' ? 'bg-red-600 text-white hover:bg-red-700' :
+          'bg-gray-200 text-gray-800 hover:bg-gray-300'
+        }`;
+        button.textContent = action.label;
+        button.setAttribute('data-action', action.label);
+        actionsDiv.appendChild(button);
+      });
+    } else {
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'action-btn px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300';
+      closeBtn.textContent = 'Fermer';
+      actionsDiv.appendChild(closeBtn);
+    }
+    
+    // Assembler la modal
+    header.appendChild(titleElement);
+    header.appendChild(closeButton);
+    modalWrapper.appendChild(header);
+    modalWrapper.appendChild(contentDiv);
+    modalWrapper.appendChild(actionsDiv);
+    modalContent.appendChild(modalWrapper);
 
     modal.appendChild(modalContent);
     this.modalContainer.appendChild(modal);
@@ -140,7 +169,10 @@ export class GlobalButtonHandler {
 
   private closeModal() {
     if (this.modalContainer) {
-      this.modalContainer.innerHTML = '';
+              // Nettoyage sécurisé du conteneur
+        while (this.modalContainer.firstChild) {
+          this.modalContainer.removeChild(this.modalContainer.firstChild);
+        }
       this.modalContainer.classList.add('hidden');
     }
   }

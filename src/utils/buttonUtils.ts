@@ -2,7 +2,8 @@
 
 export const createButtonHandler = (eventType: string, details: any = {}) => {
   return () => {
-    console.log(`Button clicked: ${eventType}`, details);
+    const { log } = require('./securityLogger');
+  log.debug(`Button clicked: ${eventType}`, details, 'ButtonUtils');
     window.dispatchEvent(new CustomEvent(eventType, { detail: details }));
   };
 };

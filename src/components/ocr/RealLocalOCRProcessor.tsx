@@ -180,7 +180,7 @@ export function RealLocalOCRProcessor({ onFormDataExtracted, onClose }: RealLoca
         articles: /article\s+(\d+(?:\s+bis|\s+ter|\s+quater)?)/gi
       };
 
-      let documentType = 'legal';
+              const documentType = 'legal';
       let numero = '';
       let institution = '';
       let datePublication = '';
