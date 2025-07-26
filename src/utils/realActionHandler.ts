@@ -662,8 +662,7 @@ export class RealActionHandler {
     modal.className = 'real-action-modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50';
     
     // Utilisation sécurisée du DOM
-    const { setSecureHTML } = require('./secureDOM');
-    setSecureHTML(modal, `
+    modal.innerHTML = `
       <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div class="p-6">
           <div class="flex justify-between items-center mb-4">
