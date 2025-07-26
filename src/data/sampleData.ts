@@ -526,10 +526,41 @@ export function initializeSampleData() {
   ];
 
   // Ajouter les données au store
-  sampleLegalTexts.forEach(text => store.addLegalText(text));
-  sampleProcedures.forEach(procedure => store.addProcedure(procedure));
-  sampleNews.forEach(news => store.addNews(news));
-  sampleTemplates.forEach(template => store.addTemplate(template));
+  sampleLegalTexts.forEach((text: any, index: number) => store.addLegalText({
+    ...text,
+    id: String(index + 1),
+    publishDate: new Date().toISOString(),
+    description: text.content?.substring(0, 200) || '',
+    authority: 'République Algérienne',
+    joNumber: `JO-${2024}-${index + 1}`,
+    date: new Date(),
+    source: 'Journal Officiel',
+    insertionMethod: 'manual',
+    views: Math.floor(Math.random() * 1000),
+    popularity: Math.floor(Math.random() * 100)
+  }));
+  sampleProcedures.forEach((proc: any, index: number) => store.addProcedure({
+    ...proc,
+    id: String(index + 1),
+    requirements: proc.steps?.map((step: any) => step.description) || [],
+    processingTime: '5-10 jours ouvrés',
+    cost: 'Gratuit',
+    authority: 'Administration publique'
+  }));
+  sampleNews.forEach((news: any, index: number) => store.addNews({
+    ...news,
+    id: String(index + 1),
+    publishDate: new Date().toISOString(),
+    views: Math.floor(Math.random() * 500)
+  }));
+  sampleTemplates.forEach((template: any, index: number) => store.addTemplate({
+    id: String(index + 1),
+    title: template.name,
+    category: template.category,
+    description: template.content?.substring(0, 200) || '',
+    fileUrl: `/templates/${template.name.toLowerCase().replace(/\s+/g, '-')}.pdf`,
+    downloadCount: Math.floor(Math.random() * 100)
+  }));
   
   // Ajouter les nouvelles données
   sampleForumDiscussions.forEach(discussion => store.addForumDiscussion(discussion));

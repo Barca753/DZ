@@ -1,10 +1,8 @@
-// @ts-nocheck
-// Store temporairement simplifié pour éviter les erreurs de compilation
-
 import { create } from 'zustand';
+import type { AppStore, LegalText, Procedure, NewsItem, DocumentTemplate } from '@/types/store';
 
-export const useAppStore = create((set, get) => ({
-  // État basique
+export const useAppStore = create<AppStore>((set, get) => ({
+  // État initial
   legalTexts: [],
   procedures: [],
   news: [],
@@ -18,91 +16,128 @@ export const useAppStore = create((set, get) => ({
   forumMembers: [],
   currentUser: null,
   
-  // Actions de base
-  addLegalText: (text) => {
+  // Actions pour les textes juridiques
+  addLegalText: (text: LegalText) => {
     set((state) => ({
       legalTexts: [...state.legalTexts, text]
     }));
   },
   
-  addProcedure: (procedure) => {
+  deleteLegalText: (id: string) => {
+    set((state) => ({
+      legalTexts: state.legalTexts.filter(text => text.id !== id),
+      favorites: state.favorites.filter(fav => 
+        !(fav.itemId === id && fav.itemType === 'legal-text')
+      )
+    }));
+  },
+  
+  searchLegalTexts: (query: string) => {
+    const { legalTexts } = get();
+    return legalTexts.filter(text => 
+      text.title?.toLowerCase().includes(query.toLowerCase()) ||
+      text.description?.toLowerCase().includes(query.toLowerCase())
+    );
+  },
+  
+  // Actions pour les procédures
+  addProcedure: (procedure: Procedure) => {
     set((state) => ({
       procedures: [...state.procedures, procedure]
     }));
   },
   
-  addNews: (news) => {
+  deleteProcedure: (id: string) => {
+    set((state) => ({
+      procedures: state.procedures.filter(proc => proc.id !== id),
+      favorites: state.favorites.filter(fav => 
+        !(fav.itemId === id && fav.itemType === 'procedure')
+      )
+    }));
+  },
+  
+  searchProcedures: (query: string) => {
+    const { procedures } = get();
+    return procedures.filter(proc => 
+      proc.title?.toLowerCase().includes(query.toLowerCase()) ||
+      proc.description?.toLowerCase().includes(query.toLowerCase())
+    );
+  },
+  
+  // Actions pour les actualités
+  addNews: (news: NewsItem) => {
     set((state) => ({
       news: [...state.news, news]
     }));
   },
   
-  addTemplate: (template) => {
+  deleteNews: (id: string) => {
+    set((state) => ({
+      news: state.news.filter(item => item.id !== id),
+      favorites: state.favorites.filter(fav => 
+        !(fav.itemId === id && fav.itemType === 'news')
+      )
+    }));
+  },
+  
+  // Actions pour les templates
+  addTemplate: (template: DocumentTemplate) => {
     set((state) => ({
       templates: [...state.templates, template]
     }));
   },
   
-  addForumDiscussion: (discussion) => {
+  deleteTemplate: (id: string) => {
+    set((state) => ({
+      templates: state.templates.filter(template => template.id !== id),
+      favorites: state.favorites.filter(fav => 
+        !(fav.itemId === id && fav.itemType === 'template')
+      )
+    }));
+  },
+  
+  // Actions pour le forum
+  addForumDiscussion: (discussion: any) => {
     set((state) => ({
       forumDiscussions: [...state.forumDiscussions, discussion]
     }));
   },
   
-  addSharedResource: (resource) => {
+  // Actions pour les ressources partagées
+  addSharedResource: (resource: any) => {
     set((state) => ({
       sharedResources: [...state.sharedResources, resource]
     }));
   },
   
-  addVideoTutorial: (tutorial) => {
+  // Actions pour les tutoriels vidéo
+  addVideoTutorial: (tutorial: any) => {
     set((state) => ({
       videoTutorials: [...state.videoTutorials, tutorial]
     }));
   },
   
-  setConfiguration: (config) => {
+  // Configuration
+  setConfiguration: (config: any) => {
     set({ configuration: config });
   },
   
-  addForumMember: (member) => {
+  // Membres du forum
+  addForumMember: (member: any) => {
     set((state) => ({
       forumMembers: [...state.forumMembers, member]
     }));
   },
   
-  // Actions de suppression
-  deleteLegalText: (id) => {
-    set((state) => ({
-      legalTexts: state.legalTexts.filter(text => text.id !== id)
-    }));
-  },
-  
-  deleteProcedure: (id) => {
-    set((state) => ({
-      procedures: state.procedures.filter(proc => proc.id !== id)
-    }));
-  },
-  
-  deleteNews: (id) => {
-    set((state) => ({
-      news: state.news.filter(item => item.id !== id)
-    }));
-  },
-  
-  deleteTemplate: (id) => {
-    set((state) => ({
-      templates: state.templates.filter(template => template.id !== id)
-    }));
-  },
-  
-  deleteSavedSearch: (id) => {
+  // Recherches sauvegardées
+  deleteSavedSearch: (id: string) => {
     set((state) => ({
       savedSearches: state.savedSearches.filter(search => search.id !== id)
     }));
   },
   
-  removeFromFavorites: (itemId, itemType) => {
+  // Favoris
+  removeFromFavorites: (itemId: string, itemType: string) => {
     set((state) => ({
       favorites: state.favorites.filter(fav => 
         !(fav.itemId === itemId && fav.itemType === itemType)
@@ -110,22 +145,8 @@ export const useAppStore = create((set, get) => ({
     }));
   },
   
-  setCurrentUser: (user) => {
+  // Utilisateur actuel
+  setCurrentUser: (user: any) => {
     set({ currentUser: user });
-  },
-  
-  // Fonctions de recherche simplifiées
-  searchLegalTexts: (query) => {
-    const { legalTexts } = get();
-    return legalTexts.filter(text => 
-      text.title?.toLowerCase().includes(query.toLowerCase())
-    );
-  },
-  
-  searchProcedures: (query) => {
-    const { procedures } = get();
-    return procedures.filter(proc => 
-      proc.title?.toLowerCase().includes(query.toLowerCase())
-    );
   }
 }));
